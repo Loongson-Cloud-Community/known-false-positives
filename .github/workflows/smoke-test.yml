@@ -1,0 +1,28 @@
+name: Smoke Test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  smoke-test:
+    runs-on: ubuntu-latest
+    container: fedora:latest
+
+    steps:
+      - name: Install dependencies
+        run: |
+          dnf install -y csdiff git-core rpm-build
+
+      - name: Check out sources
+        uses: actions/checkout@v4
+        with:
+          fetch-tags: true
+
+      - name: Mark workspace as safe for git
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+
+      - name: Build RPM
+        run: ./make-rpm.sh
