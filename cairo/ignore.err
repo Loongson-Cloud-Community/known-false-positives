@@ -1,0 +1,20 @@
+Error: SHELLCHECK_WARNING (CWE-563):
+/usr/bin/cairo-trace:3:1: warning[SC2034]: prefix appears unused. Verify use (or export if used externally).
+#    1|   #!/usr/bin/sh
+#    2|   
+#    3|-> prefix=/usr
+#    4|   exec_prefix=/usr
+#    5|   
+# prefix/exec_prefix are standard configure-template variables emitted by autoconf.
+# They are kept for path assembly and external reference, not read in the visible
+# control flow. No functional impact; classic leftover from configure substitution.
+
+Error: SHELLCHECK_WARNING (CWE-563):
+/usr/bin/cairo-trace:4:1: warning[SC2034]: exec_prefix appears unused. Verify use (or export if used externally).
+#    2|   
+#    3|   prefix=/usr
+#    4|-> exec_prefix=/usr
+#    5|   
+#    6|   nofile=
+# Same as line 3: autoconf-generated template variable, unused in this script's
+# visible flow, no runtime effect.
