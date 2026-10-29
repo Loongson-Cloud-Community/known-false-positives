@@ -1,0 +1,17 @@
+Error: SHELLCHECK_WARNING (CWE-477):
+/etc/avahi/avahi-autoipd.action:38:17: warning[SC2166]: Prefer [ p ] || [ q ] as [ p -o q ] is not well defined.
+#   36|   METRIC=$((1000 + `cat "/sys/class/net/$2/ifindex" 2>/dev/null || echo 0`))
+#   37|   
+#   38|-> if [ -x /bin/ip -o -x /sbin/ip ] ; then
+#   39|   
+#   40|       # We have the Linux ip tool from the iproute package
+Both operands are plain -x tests, so there is no precedence ambiguity here, and -o is supported by the shells this action actually runs under.  Splitting it into two [ ] tests would change nothing.
+
+Error: SHELLCHECK_WARNING (CWE-477):
+/etc/avahi/avahi-autoipd.action:60:25: warning[SC2166]: Prefer [ p ] || [ q ] as [ p -o q ] is not well defined.
+#   58|       esac
+#   59|   
+#   60|-> elif [ -x /bin/ifconfig -o -x /sbin/ifconfig ] ; then
+#   61|   
+#   62|       # We have the old ifconfig tool
+Both operands are plain -x tests, so there is no precedence ambiguity here, and -o is supported by the shells this action actually runs under.  Splitting it into two [ ] tests would change nothing.

@@ -744,3 +744,9 @@ bash-5.2/subst.c:9785: bad_alloc_strlen: Using "strlen(name + 1)" instead of "st
 # 9750|         temp1[number - 1] = '\0';
 # savestring()' macros adds 1 to the call to 'xmalloc()' after 'strlen()'
 
+Error: SHELLCHECK_WARNING (CWE-252):
+/usr/bin/cd:2:1: warning[SC2164]: Use 'cd ... || exit' or 'cd ... || return' in case cd fails.
+#    1|   #!/usr/bin/sh
+#    2|-> builtin cd "$@"
+The script does nothing but call the 'builtin cd', so its exit status is already the exit status of 'cd' and no '|| exit' is needed.
+

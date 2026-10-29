@@ -1,0 +1,32 @@
+Error: SHELLCHECK_WARNING (CWE-563):
+/usr/bin/batch:6:1: warning[SC2034]: prefix appears unused. Verify use (or export if used externally).
+#    4|   	exit 1
+#    5|   fi
+#    6|-> prefix=/usr
+#    7|   exec_prefix=/usr
+#    8|   exec /usr/bin/at -qb now
+The wrapper only execs /usr/bin/at with a hard-coded path, so prefix is a leftover of the configure-substituted template and is never read.
+
+Error: SHELLCHECK_WARNING (CWE-563):
+/usr/bin/batch:7:1: warning[SC2034]: exec_prefix appears unused. Verify use (or export if used externally).
+#    5|   fi
+#    6|   prefix=/usr
+#    7|-> exec_prefix=/usr
+#    8|   exec /usr/bin/at -qb now
+The wrapper only execs /usr/bin/at with a hard-coded path, so exec_prefix is a leftover of the configure-substituted template and is never read.
+
+Error: SHELLCHECK_WARNING (CWE-563):
+/usr/sbin/atrun:2:1: warning[SC2034]: prefix appears unused. Verify use (or export if used externally).
+#    1|   #!/usr/bin/sh
+#    2|-> prefix=/usr
+#    3|   exec_prefix=/usr
+#    4|   exec /usr/sbin/atd -s "$@"
+The wrapper only execs /usr/sbin/atd with a hard-coded path, so prefix is a leftover of the configure-substituted template and is never read.
+
+Error: SHELLCHECK_WARNING (CWE-563):
+/usr/sbin/atrun:3:1: warning[SC2034]: exec_prefix appears unused. Verify use (or export if used externally).
+#    1|   #!/usr/bin/sh
+#    2|   prefix=/usr
+#    3|-> exec_prefix=/usr
+#    4|   exec /usr/sbin/atd -s "$@"
+The wrapper only execs /usr/sbin/atd with a hard-coded path, so exec_prefix is a leftover of the configure-substituted template and is never read.

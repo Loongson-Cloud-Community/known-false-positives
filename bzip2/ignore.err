@@ -1,0 +1,107 @@
+Error: SHELLCHECK_WARNING (CWE-563):
+/usr/bin/bzdiff:51:4: warning[SC2034]: F appears unused. Verify use (or export if used externally).
+#   49|                   case "$2" in
+#   50|   	        *.bz2)
+#   51|-> 			F=`echo "$2" | sed 's|.*/||;s|.bz2$||'`
+#   52|   			tmp=`mktemp "${TMPDIR:-/tmp}"/bzdiff.XXXXXXXXXX` || {
+#   53|   			      echo 'cannot create a temporary file' >&2
+F is assigned but never read in this version of bzdiff, so the dead assignment cannot affect behaviour.
+
+Error: SHELLCHECK_WARNING (CWE-398):
+/usr/bin/bzgrep:58:28: error[SC1075]: Use 'elif' instead of 'else if' (or put 'if' on new line if nesting).
+#   56|   res=0
+#   57|   for i do
+#   58|->   if test -f "$i"; then :; else if test -f "$i.bz2"; then i="$i.bz2"; fi; fi
+#   59|     if test $list -eq 1; then
+#   60|       bzip2 -cdfq "$i" | $grep $opt "$pat" 2>&1 > /dev/null && echo $i
+The inner 'if' is terminated by its own 'fi' on the same line, which makes the construct equivalent to 'elif'; changing it would be cosmetic only.
+
+Error: SHELLCHECK_WARNING (CWE-783):
+/usr/bin/bzgrep:60:42: warning[SC2069]: To redirect stdout+stderr, 2>&1 must be last (or use '{ cmd > file; } 2>&1' to clarify).
+#   58|     if test -f "$i"; then :; else if test -f "$i.bz2"; then i="$i.bz2"; fi; fi
+#   59|     if test $list -eq 1; then
+#   60|->     bzip2 -cdfq "$i" | $grep $opt "$pat" 2>&1 > /dev/null && echo $i
+#   61|       r=$?
+#   62|     elif test $# -eq 1 -o $silent -eq 1; then
+The redirection order is deliberate: 2>&1 keeps error messages on the terminal and sends only the matching output to /dev/null.
+
+Error: SHELLCHECK_WARNING (CWE-156):
+/usr/bin/bzgrep:74:10: warning[SC2046]: Quote this to prevent word splitting.
+#   72|       # r=${PIPESTATUS[1]}
+#   73|       exec 3>&1
+#   74|->     eval `
+#   75|         exec 4>&1 >&3 3>&-
+#   76|         {
+The substitution feeds a block of shell code to eval, which re-joins its arguments and parses them again, so the split is harmless and quoting would change nothing.
+
+Error: SHELLCHECK_WARNING (CWE-456):
+/usr/bin/bzmore:11:5: warning[SC2209]: Use var=$(command) to assign output (or quote to assign string).
+#    9|   case "$prog" in
+#   10|   	*less)	more=less	;;
+#   11|-> 	*)	more=more       ;;
+#   12|   esac
+#   13|   
+The assignment stores the literal pager name 'more' in a variable; no command substitution is missing here.
+
+Error: SHELLCHECK_WARNING:
+/usr/bin/bzmore:14:16: warning[SC3037]: In POSIX sh, echo flags are undefined.
+#   12|   esac
+#   13|   
+#   14|-> if test "`echo -n a`" = "-n a"; then
+#   15|     # looks like a SysV system:
+#   16|     n1=''; n2='\c'
+This line is the echo -n capability probe itself: it tests how the local echo treats flags, so the non-POSIX usage is intentional.
+
+Error: SHELLCHECK_WARNING (CWE-398):
+/usr/bin/bzmore:28:48: warning[SC2172]: Trapping signals by number is not well defined. Prefer signal names.
+#   26|   fi
+#   27|   if test $? -eq 0 -a -n "$oldtty"; then
+#   28|->    trap 'stty $oldtty 2>/dev/null; exit' 0 2 3 5 10 13 15
+#   29|   else
+#   30|      trap 'stty $ncb echo 2>/dev/null; exit' 0 2 3 5 10 13 15
+Avoid fixing them to be cautious that a fix won't introduce a new compatibility issue on other operating systems.
+
+Error: SHELLCHECK_WARNING (CWE-398):
+/usr/bin/bzmore:28:50: warning[SC2172]: Trapping signals by number is not well defined. Prefer signal names.
+#   26|   fi
+#   27|   if test $? -eq 0 -a -n "$oldtty"; then
+#   28|->    trap 'stty $oldtty 2>/dev/null; exit' 0 2 3 5 10 13 15
+#   29|   else
+#   30|      trap 'stty $ncb echo 2>/dev/null; exit' 0 2 3 5 10 13 15
+Avoid fixing them to be cautious that a fix won't introduce a new compatibility issue on other operating systems.
+
+Error: SHELLCHECK_WARNING (CWE-398):
+/usr/bin/bzmore:28:53: warning[SC2172]: Trapping signals by number is not well defined. Prefer signal names.
+#   26|   fi
+#   27|   if test $? -eq 0 -a -n "$oldtty"; then
+#   28|->    trap 'stty $oldtty 2>/dev/null; exit' 0 2 3 5 10 13 15
+#   29|   else
+#   30|      trap 'stty $ncb echo 2>/dev/null; exit' 0 2 3 5 10 13 15
+Avoid fixing them to be cautious that a fix won't introduce a new compatibility issue on other operating systems.
+
+Error: SHELLCHECK_WARNING (CWE-398):
+/usr/bin/bzmore:30:50: warning[SC2172]: Trapping signals by number is not well defined. Prefer signal names.
+#   28|      trap 'stty $oldtty 2>/dev/null; exit' 0 2 3 5 10 13 15
+#   29|   else
+#   30|->    trap 'stty $ncb echo 2>/dev/null; exit' 0 2 3 5 10 13 15
+#   31|   fi
+#   32|   
+Avoid fixing them to be cautious that a fix won't introduce a new compatibility issue on other operating systems.
+
+Error: SHELLCHECK_WARNING (CWE-398):
+/usr/bin/bzmore:30:52: warning[SC2172]: Trapping signals by number is not well defined. Prefer signal names.
+#   28|      trap 'stty $oldtty 2>/dev/null; exit' 0 2 3 5 10 13 15
+#   29|   else
+#   30|->    trap 'stty $ncb echo 2>/dev/null; exit' 0 2 3 5 10 13 15
+#   31|   fi
+#   32|   
+Avoid fixing them to be cautious that a fix won't introduce a new compatibility issue on other operating systems.
+
+Error: SHELLCHECK_WARNING (CWE-398):
+/usr/bin/bzmore:30:55: warning[SC2172]: Trapping signals by number is not well defined. Prefer signal names.
+#   28|      trap 'stty $oldtty 2>/dev/null; exit' 0 2 3 5 10 13 15
+#   29|   else
+#   30|->    trap 'stty $ncb echo 2>/dev/null; exit' 0 2 3 5 10 13 15
+#   31|   fi
+#   32|   
+Avoid fixing them to be cautious that a fix won't introduce a new compatibility issue on other operating systems.
