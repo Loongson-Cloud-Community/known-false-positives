@@ -1,0 +1,12 @@
+Error: SHELLCHECK_WARNING (CWE-758):
+/etc/profile.d/colorls.sh:1:1: error[SC2148]: Tips depend on target shell and yours is unknown. Add a shebang or a 'shell' directive.
+#    1|-> # color-ls initialization
+#    2|   
+#    3|   # Skip all for noninteractive shells.
+# Scripts under /etc/profile.d/ are sourced by /etc/profile, not executed directly.
+# Adding a shebang would be wrong; they must stay shell-agnostic. Known false positive.
+
+Error: SHELLCHECK_WARNING (CWE-758):
+/etc/profile.d/sm3sum.sh:1:1: error[SC2148]: Tips depend on target shell and yours is unknown. Add a shebang or a 'shell' directive.
+#    1|-> alias sm3sum 'cksum -a sm3' 2>/dev/null
+# Same as colorls.sh: profile.d fragment sourced by /etc/profile, no shebang intended.
