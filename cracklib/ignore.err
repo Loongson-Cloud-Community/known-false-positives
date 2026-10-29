@@ -1,0 +1,9 @@
+Error: SHELLCHECK_WARNING (CWE-477):
+/usr/sbin/cracklib-update:23:37: warning[SC2166]: Prefer [ p ] && [ q ] as [ p -a q ] is not well defined.
+#   21|   fi
+#   22|   
+#   23|-> if [ -n "${cracklib_dictpath_src}"  -a  -n "${cracklib_dictpath}" ]
+#   24|   then
+#   25|       export LC_COLLATE=C
+# `-a` inside [ ] is POSIX-ambiguous but supported by both bash and dash. Behavior is
+# correct on this system. Low-risk style issue, not a runtime defect.
