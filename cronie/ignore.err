@@ -1,0 +1,28 @@
+Error: SHELLCHECK_WARNING (CWE-156):
+/etc/cron.hourly/0anacron:6:6: warning[SC2046]: Quote this to prevent word splitting.
+#    4|       day=`cat /var/spool/anacron/cron.daily`
+#    5|   fi
+#    6|-> if [ `date +%Y%m%d` = "$day" ]; then
+#    7|       exit 0
+#    8|   fi
+# `date +%Y%m%d` always yields a single space-free 8-digit string, no splitting risk.
+# Low risk, not triggered.
+
+Error: SHELLCHECK_WARNING (CWE-156):
+/etc/cron.hourly/0anacron:13:10: warning[SC2046]: Quote this to prevent word splitting.
+#   11|   online=1
+#   12|   for psupply in /sys/class/power_supply/* ; do
+#   13|->     if [ `cat "$psupply/type" 2>/dev/null`x = Mainsx ] && [ -f "$psupply/online" ]; then
+#   14|           if [ `cat "$psupply/online" 2>/dev/null`x = 1x ]; then
+#   15|               online=1
+# /sys/class/power_supply/*/type contains a single token ("Mains"/"Battery"), so the
+# unquoted substitution cannot split. Low risk, not triggered.
+
+Error: SHELLCHECK_WARNING (CWE-156):
+/etc/cron.hourly/0anacron:14:14: warning[SC2046]: Quote this to prevent word splitting.
+#   12|   for psupply in /sys/class/power_supply/* ; do
+#   13|       if [ `cat "$psupply/type" 2>/dev/null`x = Mainsx ] && [ -f "$psupply/online" ]; then
+#   14|->         if [ `cat "$psupply/online" 2>/dev/null`x = 1x ]; then
+#   15|               online=1
+#   16|               break
+# /sys/class/power_supply/*/online contains "0" or "1", single token, no splitting.
