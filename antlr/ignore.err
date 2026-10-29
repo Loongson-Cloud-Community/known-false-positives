@@ -1,0 +1,26 @@
+Error: SHELLCHECK_WARNING (CWE-563):
+/usr/bin/antlr-config:6:1: warning[SC2034]: datadir appears unused. Verify use (or export if used externally).
+#    4|   prefix=/usr
+#    5|   exec_prefix=/usr
+#    6|-> datadir=/usr/share
+#    7|   libdir=/usr/lib64
+#    8|   includedir=/usr/include
+Only libdir and includedir are used later in the script.  datadir is a leftover of the configure-generated prefix block, so this is a harmless dead assignment.
+
+Error: SHELLCHECK_WARNING (CWE-563):
+/usr/bin/antlr-config:37:6: warning[SC2034]: optarg appears unused. Verify use (or export if used externally).
+#   35|   	case "$1" in
+#   36|   		-*=*) optarg=`echo "$1" | sed 's/[-_a-zA-Z0-9]*=//'` ;;
+#   37|-> 		*) optarg= ;;
+#   38|   	esac
+#   39|   
+The script only tests which option was given and never works with its value, so optarg is assigned but never read.  This is a harmless dead assignment.
+
+Error: SHELLCHECK_WARNING:
+/usr/bin/antlr-config:56:12: warning[SC2194]: This word is constant. Did you forget the $ on a variable?
+#   54|         ;;
+#   55|   	--libs)
+#   56|->       case gcc in
+#   57|           cl|bcc32)
+#   58|             libs="${libdir}/antlr.lib"
+The word is a literal compiler name that is tested on purpose, not a variable reference, so no '$' is missing here.
