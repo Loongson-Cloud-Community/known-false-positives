@@ -1,0 +1,62 @@
+Error: SHELLCHECK_WARNING:
+/etc/profile.d/bash_completion.sh:6:11: warning[SC3028]: In POSIX sh, BASH_VERSINFO is undefined.
+#    4|   
+#    5|       # Check for recent enough version of bash.
+#    6|->     if [ "${BASH_VERSINFO[0]}" -gt 4 ] ||
+#    7|           [ "${BASH_VERSINFO[0]}" -eq 4 -a "${BASH_VERSINFO[1]}" -ge 2 ]; then
+#    8|           [ -r "${XDG_CONFIG_HOME:-$HOME/.config}/bash_completion" ] &&
+The snippet is sourced by every shell at login, so BASH_VERSINFO may be unset; it is only a version probe whose test fails outside bash and skips the bash-only part below.
+
+Error: SHELLCHECK_WARNING:
+/etc/profile.d/bash_completion.sh:6:11: warning[SC3054]: In POSIX sh, array references are undefined.
+#    4|   
+#    5|       # Check for recent enough version of bash.
+#    6|->     if [ "${BASH_VERSINFO[0]}" -gt 4 ] ||
+#    7|           [ "${BASH_VERSINFO[0]}" -eq 4 -a "${BASH_VERSINFO[1]}" -ge 2 ]; then
+#    8|           [ -r "${XDG_CONFIG_HOME:-$HOME/.config}/bash_completion" ] &&
+The array reference belongs to that same version probe; in POSIX sh it expands to an empty string, the test fails and the bash-only part below is skipped.
+
+Error: SHELLCHECK_WARNING:
+/etc/profile.d/bash_completion.sh:7:12: warning[SC3028]: In POSIX sh, BASH_VERSINFO is undefined.
+#    5|       # Check for recent enough version of bash.
+#    6|       if [ "${BASH_VERSINFO[0]}" -gt 4 ] ||
+#    7|->         [ "${BASH_VERSINFO[0]}" -eq 4 -a "${BASH_VERSINFO[1]}" -ge 2 ]; then
+#    8|           [ -r "${XDG_CONFIG_HOME:-$HOME/.config}/bash_completion" ] &&
+#    9|               . "${XDG_CONFIG_HOME:-$HOME/.config}/bash_completion"
+The snippet is sourced by every shell at login, so BASH_VERSINFO may be unset; it is only a version probe whose test fails outside bash and skips the bash-only part below.
+
+Error: SHELLCHECK_WARNING:
+/etc/profile.d/bash_completion.sh:7:12: warning[SC3054]: In POSIX sh, array references are undefined.
+#    5|       # Check for recent enough version of bash.
+#    6|       if [ "${BASH_VERSINFO[0]}" -gt 4 ] ||
+#    7|->         [ "${BASH_VERSINFO[0]}" -eq 4 -a "${BASH_VERSINFO[1]}" -ge 2 ]; then
+#    8|           [ -r "${XDG_CONFIG_HOME:-$HOME/.config}/bash_completion" ] &&
+#    9|               . "${XDG_CONFIG_HOME:-$HOME/.config}/bash_completion"
+The array reference belongs to that same version probe; in POSIX sh it expands to an empty string, the test fails and the bash-only part below is skipped.
+
+Error: SHELLCHECK_WARNING:
+/etc/profile.d/bash_completion.sh:7:43: warning[SC3028]: In POSIX sh, BASH_VERSINFO is undefined.
+#    5|       # Check for recent enough version of bash.
+#    6|       if [ "${BASH_VERSINFO[0]}" -gt 4 ] ||
+#    7|->         [ "${BASH_VERSINFO[0]}" -eq 4 -a "${BASH_VERSINFO[1]}" -ge 2 ]; then
+#    8|           [ -r "${XDG_CONFIG_HOME:-$HOME/.config}/bash_completion" ] &&
+#    9|               . "${XDG_CONFIG_HOME:-$HOME/.config}/bash_completion"
+The snippet is sourced by every shell at login, so BASH_VERSINFO may be unset; it is only a version probe whose test fails outside bash and skips the bash-only part below.
+
+Error: SHELLCHECK_WARNING:
+/etc/profile.d/bash_completion.sh:7:43: warning[SC3054]: In POSIX sh, array references are undefined.
+#    5|       # Check for recent enough version of bash.
+#    6|       if [ "${BASH_VERSINFO[0]}" -gt 4 ] ||
+#    7|->         [ "${BASH_VERSINFO[0]}" -eq 4 -a "${BASH_VERSINFO[1]}" -ge 2 ]; then
+#    8|           [ -r "${XDG_CONFIG_HOME:-$HOME/.config}/bash_completion" ] &&
+#    9|               . "${XDG_CONFIG_HOME:-$HOME/.config}/bash_completion"
+The array reference belongs to that same version probe; in POSIX sh it expands to an empty string, the test fails and the bash-only part below is skipped.
+
+Error: SHELLCHECK_WARNING:
+/etc/profile.d/bash_completion.sh:10:12: warning[SC3044]: In POSIX sh, 'shopt' is undefined.
+#    8|           [ -r "${XDG_CONFIG_HOME:-$HOME/.config}/bash_completion" ] &&
+#    9|               . "${XDG_CONFIG_HOME:-$HOME/.config}/bash_completion"
+#   10|->         if shopt -q progcomp && [ -r /usr/share/bash-completion/bash_completion ]; then
+#   11|               # Source completion code.
+#   12|               . /usr/share/bash-completion/bash_completion
+shopt is a bash builtin; in other shells the command is not found, the '&&' chain short-circuits and the completion code is never sourced.
