@@ -1,0 +1,18 @@
+Error: SHELLCHECK_WARNING (CWE-457):
+/etc/dhcp/dhclient.d/chrony.sh:4:30: warning[SC2154]: interface is referenced but not assigned.
+#    2|   
+#    3|   CHRONY_SOURCEDIR=/run/chrony-dhcp
+#    4|-> SERVERFILE=$CHRONY_SOURCEDIR/$interface.sources
+#    5|   
+#    6|   chrony_config() {
+# This is a dhclient hook script. `interface` is assigned and exported by dhclient
+# before sourcing the hook, so it is defined at runtime. Standard false positive.
+
+Error: SHELLCHECK_WARNING (CWE-457):
+/etc/dhcp/dhclient.d/chrony.sh:13:17: warning[SC2154]: new_ntp_servers is referenced but not assigned.
+#   11|   	if [ "$PEERNTP" != "no" ]; then
+#   12|   		mkdir -p $CHRONY_SOURCEDIR
+#   13|-> 		for server in $new_ntp_servers; do
+#   14|   			echo "server $server ${NTPSERVERARGS:-iburst}" >> "$SERVERFILE"
+#   15|   		done
+# `new_ntp_servers` is injected by the dhclient hook environment, same as `interface`.
