@@ -1,0 +1,63 @@
+Error: SHELLCHECK_WARNING (CWE-563):
+/usr/bin/ca-legacy:24:9: warning[SC2034]: LEXPECT appears unused. Verify use (or export if used externally).
+#   22|       else
+#   23|           echo "Legacy CAs are set to DEFAULT in file $LCFILE (affects install/upgrade)"
+#   24|->         LEXPECT=$LDEFAULT
+#   25|       fi
+# LEXPECT is a leftover/legacy assignment; it is not read in the visible control flow
+# and has no functional effect. The script's install/default/disable/check paths work
+# correctly without it. Low risk, no runtime impact.
+
+Error: SHELLCHECK_WARNING:
+/usr/bin/ca-legacy:61:4: warning[SC3010]: In POSIX sh, [[ ]] is undefined.
+#   59|   }
+#   60|   
+#   61|-> if [[ $# -eq 0 ]]; then
+#   62|     # no parameters
+#   63|     do_help
+# The shebang is #!/bin/sh, but the script uses bash-specific [[ ]]. On this system
+# /bin/sh -> bash, so [[ ]] is accepted and the script runs without error.
+# This is an upstream portability flaw (would fail on systems where /bin/sh -> dash),
+# not a runtime defect in this environment. Recorded as low-risk, not-triggered.
+# Suggested fix for upstream: replace [[ ]] with [ ] or change shebang to #!/bin/bash.
+
+Error: SHELLCHECK_WARNING:
+/usr/bin/ca-legacy:67:4: warning[SC3010]: In POSIX sh, [[ ]] is undefined.
+#   65|   fi
+#   66|   
+#   67|-> if [[ "$1" = "install" ]]; then
+#   68|     do_install
+#   69|     exit $?
+# Same as the SC3010 finding at line 61: /bin/sh -> bash on this system,
+# [[ ]] is valid here; portability issue only.
+
+Error: SHELLCHECK_WARNING:
+/usr/bin/ca-legacy:72:4: warning[SC3010]: In POSIX sh, [[ ]] is undefined.
+#   70|   fi
+#   71|   
+#   72|-> if [[ "$1" = "default" ]]; then
+#   73|     do_default
+#   74|     exit $?
+# Same as the SC3010 finding at line 61: /bin/sh -> bash on this system,
+# [[ ]] is valid here; portability issue only.
+
+Error: SHELLCHECK_WARNING:
+/usr/bin/ca-legacy:76:4: warning[SC3010]: In POSIX sh, [[ ]] is undefined.
+#   74|     exit $?
+#   75|   fi
+#   76|-> if [[ "$1" = "disable" ]]; then
+#   77|     do_disable
+#   78|     exit $?
+# Same as the SC3010 finding at line 61: /bin/sh -> bash on this system,
+# [[ ]] is valid here; portability issue only.
+
+Error: SHELLCHECK_WARNING:
+/usr/bin/ca-legacy:81:4: warning[SC3010]: In POSIX sh, [[ ]] is undefined.
+#   79|   fi
+#   80|   
+#   81|-> if [[ "$1" = "check" ]]; then
+#   82|     do_check
+#   83|     exit $?
+# Same as the SC3010 finding at line 61: /bin/sh -> bash on this system,
+# [[ ]] is valid here; portability issue only.
+
