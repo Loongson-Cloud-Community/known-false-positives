@@ -1,0 +1,62 @@
+Error: SHELLCHECK_WARNING (CWE-156):
+/usr/libexec/initscripts/legacy-actions/auditd/reload:6:6: warning[SC2046]: Quote this to prevent word splitting.
+#    4|   
+#    5|   # Check that we are root ... so non-root users stop here
+#    6|-> test $(id -u) = 0  ||  exit 4
+#    7|   
+#    8|   PATH=/sbin:/bin:/usr/bin:/usr/sbin
+id -u prints a single number, so the unquoted command substitution can never be split into more words.
+
+Error: SHELLCHECK_WARNING (CWE-156):
+/usr/libexec/initscripts/legacy-actions/auditd/resume:6:6: warning[SC2046]: Quote this to prevent word splitting.
+#    4|   
+#    5|   # Check that we are root ... so non-root users stop here
+#    6|-> test $(id -u) = 0  ||  exit 4
+#    7|   
+#    8|   PATH=/sbin:/bin:/usr/bin:/usr/sbin
+id -u prints a single number, so the unquoted command substitution can never be split into more words.
+
+Error: SHELLCHECK_WARNING (CWE-156):
+/usr/libexec/initscripts/legacy-actions/auditd/rotate:6:6: warning[SC2046]: Quote this to prevent word splitting.
+#    4|   
+#    5|   # Check that we are root ... so non-root users stop here
+#    6|-> test $(id -u) = 0  ||  exit 4
+#    7|   
+#    8|   PATH=/sbin:/bin:/usr/bin:/usr/sbin
+id -u prints a single number, so the unquoted command substitution can never be split into more words.
+
+Error: SHELLCHECK_WARNING (CWE-156):
+/usr/libexec/initscripts/legacy-actions/auditd/state:6:6: warning[SC2046]: Quote this to prevent word splitting.
+#    4|   
+#    5|   # Check that we are root ... so non-root users stop here
+#    6|-> test $(id -u) = 0  ||  exit 4
+#    7|   
+#    8|   PATH=/sbin:/bin:/usr/bin:/usr/sbin
+id -u prints a single number, so the unquoted command substitution can never be split into more words.
+
+Error: SHELLCHECK_WARNING:
+/usr/libexec/initscripts/legacy-actions/auditd/state:16:6: warning[SC3037]: In POSIX sh, echo flags are undefined.
+#   14|   killproc $prog -CONT
+#   15|   RETVAL=$?
+#   16|-> echo -e "\n"
+#   17|   sleep 1
+#   18|   if [ $? -eq 0 ] ; then
+echo -e is undefined in POSIX but works in the shells actually used on Linux, and the line only prints a newline.
+
+Error: SHELLCHECK_WARNING (CWE-156):
+/usr/libexec/initscripts/legacy-actions/auditd/stop:6:6: warning[SC2046]: Quote this to prevent word splitting.
+#    4|   
+#    5|   # Check that we are root ... so non-root users stop here
+#    6|-> test $(id -u) = 0  ||  exit 4
+#    7|   
+#    8|   PATH=/sbin:/bin:/usr/bin:/usr/sbin
+id -u prints a single number, so the unquoted command substitution can never be split into more words.
+
+Error: SHELLCHECK_WARNING (CWE-398):
+/usr/sbin/augenrules:38:40: warning[SC2172]: Trapping signals by number is not well defined. Prefer signal names.
+#   36|   
+#   37|   # Delete the interim file on faults
+#   38|-> trap 'rm -f ${TmpRules}; exit 1' 1 2 3 13 15
+#   39|   
+#   40|   try_load() {
+Trapping signals by their numbers is the established style of the initscripts family and works on all supported platforms; rewriting it would only risk behavioural changes.
