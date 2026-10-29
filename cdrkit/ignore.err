@@ -1,0 +1,29 @@
+
+Error: SHELLCHECK_WARNING (CWE-156):
+/usr/bin/cdda2ogg:65:15: warning[SC2046]: Quote this to prevent word splitting.
+#   63|   fi
+#   64|   
+#   65|-> echo Fetching `echo $LIST | wc -w` tracks from $CDDA_DEVICE, encoding with $MP_CODER.
+#   66|   echo Cancel with Ctrl-C, watch out for error messages.
+#   67|   
+# `wc -w` always emits a single space-free integer, so word splitting cannot occur.
+# Low risk, not triggered. Upstream could still switch to $(...) and quote it.
+
+Error: SHELLCHECK_WARNING (CWE-149):
+/usr/bin/pitchplay:31:44: warning[SC2027]: The surrounding quotes actually unquote this. Remove or escape them.
+#   29|       RES=$?
+#   30|       if [ $RES -ne 0 ]; then
+#   31|->       echo "$CDDA2WAV error, return value "$RES". Aborted." >&2
+#   32|         break
+#   33|       fi
+# The quotes are split into three segments, but echo joins them with spaces, so the
+# output is exactly as intended. Stylistic flaw, not a behavioral bug.
+
+Error: SHELLCHECK_WARNING (CWE-149):
+/usr/bin/readmult:23:44: warning[SC2027]: The surrounding quotes actually unquote this. Remove or escape them.
+#   21|       RES=$?
+#   22|       if [ $RES -ne 0 ]; then
+#   23|->       echo "$CDDA2WAV error, return value "$RES". Aborted." >&2
+#   24|         break
+#   25|       fi
+# Identical pattern to pitchplay:31; echo output is correct, quote handling is sloppy.
