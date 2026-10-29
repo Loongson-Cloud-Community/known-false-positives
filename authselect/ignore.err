@@ -1,0 +1,42 @@
+Error: SHELLCHECK_WARNING (CWE-758):
+/etc/bash_completion.d/authselect-completion.sh:1:1: error[SC2148]: Tips depend on target shell and yours is unknown. Add a shebang or a 'shell' directive.
+#    1|-> #
+#    2|   #    Authors:
+#    3|   #        Tomas Halman <thalman@redhat.com>
+This file is a bash completion snippet that is sourced by the bash-completion framework, so a shebang would never be used.
+
+Error: SHELLCHECK_WARNING (CWE-140):
+/etc/bash_completion.d/authselect-completion.sh:199:24: warning[SC2207]: Prefer mapfile or read -a to split command output (or quote to avoid splitting).
+#  197|       if [[ "$possibleopts" != "" ]]; then
+#  198|           if [[ "${COMP_WORDS[$COMP_CWORD]}" = "=" ]]; then
+#  199|->             COMPREPLY=($(compgen -W "$possibleopts"))
+#  200|           else
+#  201|               COMPREPLY=($(compgen -W "$possibleopts" -- "${COMP_WORDS[$COMP_CWORD]}"))
+Splitting the output of compgen into words is exactly what is wanted here -- it yields the list of completion candidates assigned to COMPREPLY.
+
+Error: SHELLCHECK_WARNING (CWE-140):
+/etc/bash_completion.d/authselect-completion.sh:201:24: warning[SC2207]: Prefer mapfile or read -a to split command output (or quote to avoid splitting).
+#  199|               COMPREPLY=($(compgen -W "$possibleopts"))
+#  200|           else
+#  201|->             COMPREPLY=($(compgen -W "$possibleopts" -- "${COMP_WORDS[$COMP_CWORD]}"))
+#  202|           fi
+#  203|       else
+Splitting the output of compgen into words is exactly what is wanted here -- it yields the list of completion candidates assigned to COMPREPLY.
+
+Error: SHELLCHECK_WARNING (CWE-569):
+/etc/bash_completion.d/authselect-completion.sh:206:26: warning[SC2124]: Assigning an array to a string! Assign as array, or use * instead of @ to concatenate.
+#  204|           command="$(get_command)"
+#  205|           if [[ "$command" = "" ]]; then
+#  206|->             possibleopts="$(get_global_options) ${COMMANDS[@]}"
+#  207|           else
+#  208|               possibleopts="$(get_global_options) $(get_command_params) $(get_command_keywords) $(get_command_options)"
+possibleopts is deliberately kept as a whitespace separated string because it is later expanded by compgen -W, which splits it again.
+
+Error: SHELLCHECK_WARNING (CWE-140):
+/etc/bash_completion.d/authselect-completion.sh:210:20: warning[SC2207]: Prefer mapfile or read -a to split command output (or quote to avoid splitting).
+#  208|               possibleopts="$(get_global_options) $(get_command_params) $(get_command_keywords) $(get_command_options)"
+#  209|           fi
+#  210|->         COMPREPLY=($(compgen -W "$possibleopts" -- "${COMP_WORDS[$COMP_CWORD]}"))
+#  211|       fi
+#  212|   }
+Splitting the output of compgen into words is exactly what is wanted here -- it yields the list of completion candidates assigned to COMPREPLY.
