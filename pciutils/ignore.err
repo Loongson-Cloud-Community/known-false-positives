@@ -1,0 +1,8 @@
+Error: SHELLCHECK_WARNING (CWE-456):
+/usr/sbin/update-pciids:8:1: warning[SC2209]: Use var=$(command) to assign output (or quote to assign string).
+#    6|   DEST=/usr/share/hwdata/pci.ids
+#    7|   PCI_COMPRESSED_IDS=
+#    8|-> GREP=grep
+# GREP is a configurable command-path variable, invoked later as $GREP; it is not
+# meant to capture command output. ShellCheck's heuristic misreads the intent.
+# False positive, no runtime impact.
