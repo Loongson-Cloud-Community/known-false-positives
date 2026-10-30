@@ -1,0 +1,23 @@
+Error: SHELLCHECK_WARNING (CWE-563):
+/usr/sbin/pam_namespace_helper:8:16: warning[SC2034]: polydir appears unused. Verify use (or export if used externally).
+#    7|   sed -e ... < $CONF | \
+#    8|->     while read polydir instance_prefix method uids; do
+# Config lines have four fields; polydir/method/uids are read as positional
+# placeholders so instance_prefix is extracted correctly. Unused by design.
+
+Error: SHELLCHECK_WARNING (CWE-563):
+/usr/sbin/pam_namespace_helper:8:40: warning[SC2034]: method appears unused. Verify use (or export if used externally).
+# Same read statement as line 8:16; placeholder field, unused by design.
+
+Error: SHELLCHECK_WARNING (CWE-563):
+/usr/sbin/pam_namespace_helper:8:47: warning[SC2034]: uids appears unused. Verify use (or export if used externally).
+# Same read statement as line 8:16; placeholder field, unused by design.
+
+Error: SHELLCHECK_WARNING (CWE-277):
+/usr/sbin/pam_namespace_helper:11:22: warning[SC2174]: When used with -p, -m only applies to the deepest directory.
+#    9|   	if [ ! -e "$instance_prefix" ]; then
+#   10|   	    echo "mkdir $instance_prefix"
+#   11|-> 	    mkdir --parents --mode=0 -Z "$instance_prefix"
+# mode=0 is intentional (lock down the created instance dir, with SELinux context
+# via -Z); -p -m applying only to the deepest dir is the intended behavior here.
+# Low-risk style warning, not triggered.
